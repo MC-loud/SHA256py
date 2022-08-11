@@ -89,19 +89,24 @@ def main(arg):
     print('SHA256:', digest)
 
 def pre_process(input):
-
-    binary_rep = ''.join(format(ord(i), '08b') for i in input)
-    binary_rep2 = binary_rep + '1'
-    block_multiple = 512
-    while len(binary_rep2) > (block_multiple-64):
-        block_multiple += 512
-    while len(binary_rep2) + 64 < block_multiple:
-        binary_rep2+='0'
-    big_endian = "{0:b}".format(len(binary_rep))
-    for i in range(64-len(big_endian)):
-        binary_rep2 +='0'
-    binary_rep2 +=big_endian
-    return(binary_rep2)
+    try:
+        file = open(input,"rb")
+        string = file.read()
+    except:
+        string = input
+    finally:
+        binary_rep = ''.join(format(ord(i), '08b') for i in string)
+        binary_rep2 = binary_rep + '1'
+        block_multiple = 512
+        while len(binary_rep2) > (block_multiple-64):
+            block_multiple += 512
+        while len(binary_rep2) + 64 < block_multiple:
+            binary_rep2+='0'
+        big_endian = "{0:b}".format(len(binary_rep))
+        for i in range(64-len(big_endian)):
+            binary_rep2 +='0'
+        binary_rep2 +=big_endian
+        return(binary_rep2)
 
 def right_rotate(input, factor):
 
